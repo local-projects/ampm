@@ -13,6 +13,7 @@ var Network = require("./model/network.js").Network;
 var Persistence = require("./model/persistence.js").Persistence;
 var ServerState = require("./model/serverState.js").ServerState;
 var Logging = require("./model/logging.js").Logging;
+var Downloads = require("./model/downloads.js").Downloads;
 
 global.$$config = {};
 
@@ -105,6 +106,11 @@ global.$$network = new Network({
 // The manager of the application process, controlling restarts and heartbeats.
 global.$$persistence = new Persistence({
   config: $$config.persistence,
+});
+
+// The manager of downloading the latest release
+global.$$downloads = new Downloads({
+  config: $$config.downloads,
 });
 
 // The logging manager.
