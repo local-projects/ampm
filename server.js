@@ -121,5 +121,6 @@ if ($$plugin) {
     $$plugin.boot();
 }
 
+logger.info('port: ', $$config.network.socketToConsolePort)
 logger.info('Server started.');
 logger.info('Console is at: http://' + os.hostname() + ':' + $$network.get('socketToConsolePort'));
