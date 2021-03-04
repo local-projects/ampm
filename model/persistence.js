@@ -62,6 +62,18 @@ exports.Persistence = BaseModel.extend({
 
         // Whether to let ampm crash if an unhandled exception is encountered.
         exitOnError: true,
+
+        // github org of repo. eg local-projects
+        org: "",
+
+        // github org of repo. eg fldc.conversation-booth.fe
+        repo: "",
+
+        // directory you want the release saved as. eg.CONVERSATION_BOOTH
+        appName: "",
+
+        // point to bat script that downloads the latest release
+        releaseScript: ""
     },
 
     // The spawned application process.
@@ -474,13 +486,16 @@ exports.Persistence = BaseModel.extend({
     // Donwload the latest release
     downloadRelease: function(force, callback) {
 
-        // shut down the application
-        this.shutdownApp(_.bind(function() {}, this));
-
         console.log('Attempting to download-release')
 
-        var bat = "C:\\freelance\\local_projects\\repos\\fldc.utility.scripts\\releases\\download-release.bat";
-        var args = ["local-projects", "fldc.conversation-booth.fe", "CONVERSATION_BOOTH"];
+        var bat = this.get('releaseScript'); 
+        console.log(bat);
+        var args = [this.get('org'), this.get('repo'), this.get('appName')];
+
+        if(!bat.length){
+            console.error("There is no batch script to download the release!");
+            return;
+        }
 
         var downloadReleaseBat = child_process.spawn('cmd.exe', ['/c', bat, args[0], args[1], args[2]]);
 

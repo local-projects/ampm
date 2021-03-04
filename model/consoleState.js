@@ -133,6 +133,7 @@ exports.ConsoleState = BaseModel.extend({
 
             logger.info('Download requested from console.');
             $$serverState.saveState('runApp', false);
+            $$persistence.shutdownApp();
             $$persistence.downloadRelease();
         }, this));
 
