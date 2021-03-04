@@ -471,6 +471,32 @@ exports.Persistence = BaseModel.extend({
         return parts;
     },
 
+    // Donwload the latest release
+    downloadRelease: function(force, callback) {
+
+        // shut down the application
+        this.shutdownApp(_.bind(function() {}, this));
+
+        console.log('Attempting to download-release')
+
+        var bat = "C:\\freelance\\local_projects\\repos\\fldc.utility.scripts\\releases\\download-release.bat";
+        var args = ["local-projects", "fldc.conversation-booth.fe", "CONVERSATION_BOOTH"];
+
+        var downloadReleaseBat = child_process.spawn('cmd.exe', ['/c', bat, args[0], args[1], args[2]]);
+
+        downloadReleaseBat.stdout.on('data', (data) => {
+             console.log(data.toString());
+        });
+
+        downloadReleaseBat.stderr.on('data', (data) => {
+            console.error(data.toString());
+        });
+
+        downloadReleaseBat.on('exit', (code) => {
+            console.log(`Child exited with code ${code}`);
+        });
+    },
+
     // Kill the app process, then start it back up.
     restartApp: function(force, callback) {
         this.shutdownApp(_.bind(function() {

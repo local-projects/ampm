@@ -126,6 +126,16 @@ exports.ConsoleState = BaseModel.extend({
             $$persistence.shutdownApp();
         }, this));
 
+        socket.on('download-release', _.bind(function() {
+            if (permissions && !permissions.app) {
+                return;
+            }
+
+            logger.info('Download requested from console.');
+            $$serverState.saveState('runApp', false);
+            $$persistence.downloadRelease();
+        }, this));
+
         socket.on('restart-pc', _.bind(function() {
             if (permissions && !permissions.computer) {
                 return;

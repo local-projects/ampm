@@ -5,7 +5,8 @@ var View = Backbone.View.extend({
         'click #restart-app': '_onRestartAppClicked',
         'click #shutdown-pc': '_onShutdownPcClicked',
         'click #restart-pc': '_onRestartPcClicked',
-        'click #start-app': '_onStartClicked'
+        'click #start-app': '_onStartClicked',
+        'click #download-release': '_onReleaseClicked'
     },
 
     _socket: null,
@@ -150,6 +151,12 @@ var View = Backbone.View.extend({
     _onConfigClicked: function(event, config) {
         if (window.confirm('Are you sure you want to shut down the app and launch ' + config + ' ?')) {
             this._socket.emit('switchConfig', config);
+        }
+    },
+
+    _onReleaseClicked: function(event, config) {
+        if (window.confirm('Are you sure you want to pull the latest release?')) {
+            this._socket.emit('download-release', config);
         }
     }
 });
