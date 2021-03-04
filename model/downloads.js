@@ -19,9 +19,16 @@ exports.Downloads = BaseModel.extend({
     releaseScript: "",
   },
 
+  _downloadingRelease: false,
+
   // Set up update loops.
   initialize: function () {
     BaseModel.prototype.initialize.apply(this);
+  },
+
+  // Return state
+  isDownloadingRelease: function () {
+    return this._downloadingRelease;
   },
 
   // Donwload the latest release
@@ -36,6 +43,8 @@ exports.Downloads = BaseModel.extend({
       console.error("There is no batch script to download the release!");
       return;
     }
+
+    this.set("_downloadingRelease", true);
 
     var downloadReleaseBat = child_process.spawn("cmd.exe", [
       "/c",

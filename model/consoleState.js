@@ -260,6 +260,11 @@ exports.ConsoleState = BaseModel.extend({
       this.set("isRunning", true);
       this.set("downtime", 0);
     } else {
+      //Update last up time
+      if (this.get("isRunning")) {
+        this._startupTime = Date.now();
+      }
+
       // Not running, so reset everything.
       this.set({
         isRunning: false,
@@ -269,12 +274,10 @@ exports.ConsoleState = BaseModel.extend({
       });
 
       //! try and restart application
-      this.set("downTime", Date.now() - this._startupTime);
-      if (this.get("downTime") > 5000) {
+      this.set("downtime", Date.now() - this._startupTime);
+      if (this.get("downtime") > 5000 && !$$downloads.isDownloadingRelease()) {
         $$persistence.restartApp();
       }
-
-      console.log(this.get("downTime"));
     }
 
     clearTimeout(this._updateStatsTimeout);
