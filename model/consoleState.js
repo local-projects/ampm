@@ -291,7 +291,8 @@ exports.ConsoleState = BaseModel.extend({
 
       if (
         this.get("downtime") > timeout &&
-        !$$downloads.isDownloadingRelease()
+        !$$downloads.isDownloadingRelease() &&
+        $$persistence.get("launchCommand").length
       ) {
         console.log("Restarting app because it's been down");
         $$persistence.restartApp();
