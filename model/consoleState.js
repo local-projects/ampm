@@ -276,6 +276,7 @@ exports.ConsoleState = BaseModel.extend({
       //! try and restart application
       this.set("downtime", Date.now() - this._startupTime);
       if (this.get("downtime") > 5000 && !$$downloads.isDownloadingRelease()) {
+        console.log("Restarting app because it's been down");
         $$persistence.restartApp();
       }
     }

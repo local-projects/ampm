@@ -44,7 +44,8 @@ exports.Downloads = BaseModel.extend({
       return;
     }
 
-    this.set("_downloadingRelease", true);
+    this._downloadingRelease = true;
+    this.isDownloadingRelease();
 
     var downloadReleaseBat = child_process.spawn("cmd.exe", [
       "/c",
@@ -64,6 +65,8 @@ exports.Downloads = BaseModel.extend({
 
     downloadReleaseBat.on("exit", (code) => {
       console.log(`Child exited with code ${code}`);
+      $$persistence.restartApp();
+      this._downloadingRelease = false;
     });
   },
 });

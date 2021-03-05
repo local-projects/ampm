@@ -69,6 +69,3 @@ del zip_url.tmp
 del releases
 del %RELEASE%.zip
 
-:done
-echo.
-pause
