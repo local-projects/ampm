@@ -43,6 +43,11 @@ exports.ConsoleState = BaseModel.extend({
   // The last time the app was running to compute uptime.
   _startupTime: 0,
 
+  // The amount of time before the app relaunches when monitoring PID
+  // If the heartbeat timeout exceeds this value, it will be defaulted to the heartbeat time out
+  // Currently set to 5 seconds
+  _maxDowntime: 5000,
+
   // Set up update loops.
   initialize: function () {
     BaseModel.prototype.initialize.apply(this);
@@ -275,7 +280,19 @@ exports.ConsoleState = BaseModel.extend({
 
       //! try and restart application
       this.set("downtime", Date.now() - this._startupTime);
-      if (this.get("downtime") > 5000 && !$$downloads.isDownloadingRelease()) {
+
+      //! set timeout duration
+      var timeOut;
+      if ($$persistence.get("heartbeatTimeout") > this._maxDowntime) {
+        timeout = $$persistence.get("heartbeatTimeout");
+      } else {
+        timeout = this._maxDowntime;
+      }
+
+      if (
+        this.get("downtime") > timeout &&
+        !$$downloads.isDownloadingRelease()
+      ) {
         console.log("Restarting app because it's been down");
         $$persistence.restartApp();
       }
