@@ -24,11 +24,25 @@ exports.Downloads = BaseModel.extend({
   // Set up update loops.
   initialize: function () {
     BaseModel.prototype.initialize.apply(this);
+
+    // Web apps will send them over the app socket.
+    $$network.transports.socketToApp.sockets.on(
+      "connection",
+      _.bind(function (socket) {
+        socket.on("downloadRelease", _.bind(this._onDownloadRelease, this));
+      }, this)
+    );
   },
 
   // Return state
   isDownloadingRelease: function () {
     return this._downloadingRelease;
+  },
+
+  // Handle app asking for new download
+  _onDownloadRelease: function (message) {
+    $$persistence.shutdownApp();
+    this.downloadRelease();
   },
 
   // Donwload the latest release
