@@ -59,7 +59,7 @@ rem :: ============================================================== DOWNLOAD R
 call curl -vLJO -H "Authorization: token %TOKEN%" -H "Accept: application/octet-stream" %ZIP_URL%
 
 rem :: ============================================================== DELETE OLD APP
-rmdir %APP_NAME%
+rmdir /Q /S %APP_NAME%
 
 rem :: ============================================================== UNZIP RELEASE
 call unzip -o %RELEASE% -d %APP_NAME%
