@@ -45,8 +45,8 @@ exports.ConsoleState = BaseModel.extend({
 
   // The amount of time before the app relaunches when monitoring PID
   // If the heartbeat timeout exceeds this value, it will be defaulted to the heartbeat time out
-  // Currently set to 5 seconds
-  _maxDowntime: 5000,
+  // Currently set to 15 seconds
+  _maxDowntime: 15000,
 
   // Set up update loops.
   initialize: function () {
@@ -255,6 +255,7 @@ exports.ConsoleState = BaseModel.extend({
       });
     }
 
+    //! adding a start up time for application
     if ($$persistence.processId()) {
       // Update the uptime.
       var wasRunning = this.get("isRunning");
@@ -282,7 +283,6 @@ exports.ConsoleState = BaseModel.extend({
       this.set("downtime", Date.now() - this._startupTime);
 
       //! set timeout duration
-      var timeOut;
       if ($$persistence.get("heartbeatTimeout") > this._maxDowntime) {
         timeout = $$persistence.get("heartbeatTimeout");
       } else {

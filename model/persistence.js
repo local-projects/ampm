@@ -28,6 +28,10 @@ exports.Persistence = BaseModel.extend({
     // system configuration.
     postLaunchCommand: "",
 
+    // The amount of time the application takes to load
+    // Defaults to 0 seconds
+    startupTime: 0,
+
     // Restart the app if it doesn't start up in this much time. Set to
     // zero (default) to allow the app to take forever to start up.
     startupTimeout: 0,
@@ -297,6 +301,14 @@ exports.Persistence = BaseModel.extend({
   // When a heartbeat hasn't been received for a while, restart the app or the whole machine.
   _onRestartTimeout: function () {
     var that = this;
+    //! check to make sure the application exceeds the uptime
+    if (
+      this.processId() &&
+      $$consoleState.get("uptime") > this.get("startupTime")
+    ) {
+      logger.info("App hasn't started.");
+      return;
+    }
 
     // Save a screenshot.
     if ($$logging.get("screenshots").enabled) {
