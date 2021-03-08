@@ -51,7 +51,7 @@ call jq .[0].assets[0].url releases > zip_url.tmp
 set /p ZIP_URL=<zip_url.tmp
 echo %ZIP_URL%
 
-call jq .[0].tag_name releases > release_url.tmp
+call jq .[0].assets[0].name releases > release_url.tmp
 set /p RELEASE=<release_url.tmp
 echo %RELEASE%
 
@@ -62,10 +62,9 @@ rem :: ============================================================== DELETE OLD
 rmdir %APP_NAME%
 
 rem :: ============================================================== UNZIP RELEASE
-del %RELEASE%
-call unzip -o %RELEASE%.zip -d %APP_NAME%
+call unzip -o %RELEASE% -d %APP_NAME%
 del release_url.tmp
 del zip_url.tmp
 del releases
-del %RELEASE%.zip
+del %RELEASE%
 
