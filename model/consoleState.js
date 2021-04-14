@@ -41,7 +41,7 @@ exports.ConsoleState = BaseModel.extend({
   _updateConsoleRate: 1000 / 1,
 
   // The last time the app was running to compute uptime.
-  _startupTime: 0,
+  _startupTime: Date.now(),
 
   // The amount of time before the app relaunches when monitoring PID
   // If the heartbeat timeout exceeds this value, it will be defaulted to the heartbeat time out
@@ -294,6 +294,8 @@ exports.ConsoleState = BaseModel.extend({
         !$$downloads.isDownloadingRelease() &&
         $$persistence.get("launchCommand").length
       ) {
+        console.log(timeout + ", " + this.get("downtime"))
+
         console.log("Restarting app because it's been down");
         $$persistence.restartApp();
       }
