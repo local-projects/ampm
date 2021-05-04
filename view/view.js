@@ -74,6 +74,9 @@ var View = Backbone.View.extend({
       moment.duration(message.downtime, "milliseconds").format("dd:hh:mm:ss")
     );
     $("#restarts").html(message.restartCount);
+    $("#heartbeat").html(
+        moment.duration(message.heartbeat, "milliseconds").format("dd:hh:mm:ss")
+      );
 
     // http://omnipotent.net/jquery.sparkline/#s-docs
     var chartOptions = {

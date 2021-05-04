@@ -40,6 +40,9 @@ exports.Persistence = BaseModel.extend({
     // zero (default) to never restart due to lack of heartbeats.
     heartbeatTimeout: 0,
 
+    // MONITOR PID 
+    monitorPID: true,
+
     // Restart the machine after this many app restarts.
     restartMachineAfter: Infinity,
 
@@ -301,13 +304,16 @@ exports.Persistence = BaseModel.extend({
   // When a heartbeat hasn't been received for a while, restart the app or the whole machine.
   _onRestartTimeout: function () {
     var that = this;
-    //! check to make sure the application exceeds the uptime
-    if (
-      this.processId() &&
-      $$consoleState.get("uptime") > this.get("startupTime")
-    ) {
-      logger.info("App hasn't started.");
-      return;
+    
+    //! check to make sure the application exceeds the uptime if we are monitoring PID
+    if(this.get("monitorPID")){
+      if (
+        this.processId() &&
+        $$consoleState.get("uptime") > this.get("startupTime")
+      ) {
+        logger.info("App hasn't started.");
+        return;
+      }
     }
 
     // Save a screenshot.

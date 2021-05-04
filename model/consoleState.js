@@ -212,6 +212,7 @@ exports.ConsoleState = BaseModel.extend({
   _updateConsole: function () {
     var message = _.clone(this.attributes);
     message.restartCount = $$persistence.get("restartCount");
+    message.heartbeat = $$persistence._lastHeart;
     message.logs = $$logging.get("logCache");
     message.events = $$logging.get("eventCache");
 
@@ -292,7 +293,8 @@ exports.ConsoleState = BaseModel.extend({
       if (
         this.get("downtime") > timeout &&
         !$$downloads.isDownloadingRelease() &&
-        $$persistence.get("launchCommand").length
+        $$persistence.get("launchCommand").length &&
+        $$persistence.get("monitorPID")
       ) {
         console.log(timeout + ", " + this.get("downtime"))
 
