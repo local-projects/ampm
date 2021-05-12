@@ -1,3 +1,10 @@
+# Important Links
+
+* [LP Readme file](https://github.com/local-projects/ampm/blob/master/lpReadMe.md) logging changes made to this forked version of ampm. 
+* [Wiki page](https://github.com/local-projects/ampm/wiki/Web-Setup) with notes for web-setup
+
+# ampm 
+
 <p align="center">
   <img src="https://github.com/stimulant/ampm/blob/master/README.png?raw=true"/>
   <br/><strong>application<br/>management<br/>+<br/>performance<br/>monitoring</strong>
