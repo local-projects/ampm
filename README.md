@@ -44,11 +44,35 @@ ampm is [Stimulant's](http://stimulant.com) tool for monitoring public-facing so
 - Nodejs
 
 ## Installation
-ampm relies on the [nodemon](http://nodemon.io) utility, which must be installed first. Just run `npm install -g nodemon` from an administrator command prompt to install it.
+1. Install dependencies
 
-Then to install ampm from [npm](https://www.npmjs.com/package/ampm), just do `npm install -g ampm`.
+   1. Install [npm](https://www.npmjs.com/get-npm) (Nodejs package manager). In installation options, make sure to enable the install of Chocolatey. 
 
-To install from source, clone the repo, and do `npm link` from the root of the repo. This is the best way to do development on ampm itself.
+   2. Open an administrator command prompt, then install the [nodemon](http://nodemon.io) utility using the command
+
+      ```bash
+      npm install -g nodemon
+      ```
+
+   3. Install [git](https://git-scm.com/download/win) (if developing).
+
+2. Install ampm one of two ways, depending on your use case:
+
+   1. To use the last node build (which may not include all features in this repo), execute the command:
+
+      ```bash
+      npm install -g ampm
+      ```
+
+   2. To develop ampm and/or use all features in this repo, ampm must be installed from source:
+
+      ```bash
+      git clone http://github.com/local-projects/ampm.git
+      cd ampm
+      npm link
+      ```
+
+      Note: It is recommended to clone this to `C:\\localprojects\\ampm` or similar.
 
 ## Usage
 
