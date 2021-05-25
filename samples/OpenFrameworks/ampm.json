@@ -1,0 +1,30 @@
+{
+    "default": {
+        "persistence": {
+            "launchCommand": "C:\\localprojects\\ampm\\samples\\OpenFrameworks\\run_app.bat",
+            "maxMemory": 0,
+            "startupTimeout": 0,
+            "heartbeatTimeout": 10,
+            "monitorPID": false
+        },
+        "downloads": {
+            "org": "local-projects",
+            "repo": "repo-name",
+            "appName": "app-name",
+            "releaseScript": "C:\\localprojects\\ampm\\scripts\\download-release.bat"
+        },
+        "logging": {
+            "file": {
+                "filename": "logs/server",
+                "enabled": true
+            },
+            "console": {
+                "enabled": true,
+                "colorize": true,
+                "timestamp": true, 
+                "level": "info", 
+                "preserve": false
+            }
+        }
+    }
+}

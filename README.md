@@ -44,11 +44,42 @@ ampm is [Stimulant's](http://stimulant.com) tool for monitoring public-facing so
 - Nodejs
 
 ## Installation
-ampm relies on the [nodemon](http://nodemon.io) utility, which must be installed first. Just run `npm install -g nodemon` from an administrator command prompt to install it.
+1. Install dependencies
 
-Then to install ampm from [npm](https://www.npmjs.com/package/ampm), just do `npm install -g ampm`.
+   1. Install [npm](https://www.npmjs.com/get-npm) (Nodejs package manager). In installation options, make sure to enable the install of Chocolatey. 
 
-To install from source, clone the repo, and do `npm link` from the root of the repo. This is the best way to do development on ampm itself.
+      Note: If you're working on Windows and your user account contains a space (e.g. `Ben Snell`), then you will need to store npm modules in a different location than default. Follow these instructions:
+
+      - `npm set prefix C:\ProgramData\npm`
+      - add `C:\ProgramData\npm` to Path environment variable, replacing what is likely `C:\Users\My Name\AppData\Roaming\npm`
+
+   2. Open an administrator command prompt, then install the [nodemon](http://nodemon.io) utility using the command
+
+      ```bash
+      npm install -g nodemon
+      ```
+
+   3. Install [git](https://git-scm.com/download/win) (if developing).
+
+2. Install ampm one of two ways, depending on your use case:
+
+   1. To use the last node build (which may not include all features in this repo), execute the command:
+
+      ```bash
+      npm install -g ampm
+      ```
+
+   2. To develop ampm and/or use all features in this repo, ampm must be installed from source:
+
+      ```bash
+      git clone http://github.com/local-projects/ampm.git
+      cd ampm
+      npm link
+      ```
+
+      Note: It is recommended to clone this to `C:\\localprojects\\ampm` or similar.
+
+For full deployment instructions using ampm, see [Deployments](documentation/Deployments).
 
 ## Usage
 
@@ -171,8 +202,6 @@ Monitoring the PID of the launch command was added and defaulted to true. To tur
 * Launching ```chrome.exe``` does not produce a PID to monitor. If chrome has to be used, turn monitoring PID off and ensure heartbeats are a feature in the software.  Alternatively, it is recommended to use chromium instead of chrome as chromium has a PID to monitor. 
 
 ##### Monitoring Downtime
-
-#### Downtime 
 
 Max down time for the application is currently set in ```consoleState.js``` model. Since applications should default to using heartbeats as the monitoring mechanism, this was not set as a configurable variable.
 
@@ -326,7 +355,12 @@ To add release downloads from github, the following should be added to ```ampm.j
 		}
 ```
 
-The ```download-release.bat``` script requires a GitHub token that should be saved at ```c:\\.creds``` as ```github_token.txt```. 
+The ```download-release.bat``` script requires a GitHub token that should be saved to `c:\.creds\github_token.txt`. 
+
+*Prerequisites include:*
+
+- *jq*: install with `choco install jq -y`
+- *unzip*: install with `choco install unzip -y`
 
 ##### Steps to download release for deployed software on a PC
 
@@ -391,7 +425,20 @@ Sending a `restart` message ovr the websocket or OSC connection will cause ampm 
 
 ## Troubleshooting
 
+#### `'C:\Users\Ben' is not recognized as an internal or external command, operable program or batch file.`
 
+This error is received when the user contains a space in its name (e.g. `Ben Snell` as opposed to `BenSnell`) and npm modules are stored in the Users directory, e.g. at `C:\Users\Ben Snell\AppData\Roaming\npm`. 
+
+Fixing the white space issue is too difficult, so instead, choose a new location to store npm modules. See the fix [here](https://github.com/stimulant/ampm/issues/25#issuecomment-256997521). *Note: You will need to re-install all npm modules*.
+
+#### Persistance isn't working; App keeps restarting even though it's still running
+
+With certain deployment configurations, ampm's persistance feature does not work as intended. This appear to be because some processes [spawn](https://nodejs.org/api/child_process.html) additional processes, then end abruptly. The new subsequent processes' PIDs aren't returned to ampm for monitoring. *Note: Turning PID monitoring off does not solve this problem.* Among these processes includes:
+
+- Chrome (using the `Launch` command)
+  - Recommended Fix: Use Chromium instead. Tips for using chromium: Install with `choco install chromium`. Find the PID by using `shift` + `esc`, which pulls up Google Chrome Task Manager.
+- OpenFrameworks (when started from a batch file)
+  - Recommended Fix: Use heartbeats to monitor the application, or start its exe directly without a batch file.
 
 ## Roadmap
 
